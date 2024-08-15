@@ -1,0 +1,56 @@
+files:
+- thcrap:
+    filename: thcrap.zip
+    url: https://github.com/thpatch/thcrap/releases/latest/download/thcrap.zip
+game:
+  arch: win64
+  exe: $GAMEDIR/pfx/drive_c/default.lnk
+  launch_configs:
+  - exe: $GAMEDIR/pfx/drive_c/thcrap/bin/thcrap_configure_v3.exe
+    name: THCRAP Patch Configuration
+  - exe: $GAMEDIR/pfx/drive_c/thcrap/bootstrap_link_updater.bat
+    name: Link Updater and Configuration Tool Launcher Script
+  prefix: $GAMEDIR/pfx
+installer:
+- insert-disc:
+    requires: th08.exe
+- task:
+    install_gecko: false
+    install_mono: false
+    name: create_prefix
+- copy:
+    dst: $GAMEDIR/pfx/drive_c/Program Files/touhou8/
+    src: $DISC
+- extract:
+    dst: $GAMEDIR/pfx/drive_c/thcrap
+    file: thcrap
+- write_file:
+    content: '{ "th08": "C:/Program Files/touhou8/vpatch.exe", "th08_custom": "C:/Program
+      Files/touhou8/custom.exe" }'
+    file: $GAMEDIR/pfx/drive_c/thcrap/config/games.js
+- write_file:
+    content: start cmd.exe /k "C:/thcrap/link_updater.bat"
+    file: $GAMEDIR/pfx/drive_c/thcrap/bootstrap_link_updater.bat
+- write_file:
+    content: "@echo off \nsetlocal enabledelayedexpansion \nset count=0 \nset tempFile=%temp%\\\
+      lnkfiles.txt \ncd thcrap \ndir /b *.lnk > %tempFile% \nif %errorlevel% neq 0\
+      \ (echo No .lnk files found in the current directory. \ngoto :end) \nfor /f\
+      \ \"tokens=* delims=\" %%A in (%tempFile%) do (set /a count+=1 \nset \"file!count!=%%A\"\
+      \ \necho !count!. %%A) \nif %count%==0 (echo No .lnk files found in the current\
+      \ directory. \ngoto :end) \nset /p choice=Enter the number to set link as Lutris\
+      \ default launch: \nif not defined file%choice% (echo Invalid choice. \ngoto\
+      \ :end) \nset chosenFile=!file%choice%! \nset \"fullPath=%cd%\\%chosenFile%\"\
+      \ \necho %chosenFile% | findstr /c:\"custom\" >nul\nif %errorlevel% equ 0 (echo\
+      \ The link chosen is game configuration tool. Launching instead of setting as\
+      \ default.\nstart \"\" \"%fullPath%\"\nexit)\nset \"newPath=%cd%\\..\\default.lnk\"\
+      \ndel %tempFile% \necho Setting as default: %fullPath% \ncopy \"%fullPath%\"\
+      \ \"%newPath%\" \nexit\n:end \nendlocal"
+    file: $GAMEDIR/pfx/drive_c/thcrap/link_updater.bat
+- task:
+    executable: $GAMEDIR/pfx/drive_c/thcrap/bin/thcrap_configure_v3.exe
+    name: wineexec
+- execute:
+    command: find $GAMEDIR/pfx/drive_c/thcrap/ -not -name '*custom*.lnk' -and -name
+      'th08*.lnk' -exec cp {} $GAMEDIR/pfx/drive_c/default.lnk \;
+wine:
+  dxvk: false
