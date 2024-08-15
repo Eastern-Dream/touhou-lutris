@@ -1,0 +1,1 @@
+start cmd.exe /k "C:/thcrap/link_updater.bat"

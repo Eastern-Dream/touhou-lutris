@@ -1,0 +1,22 @@
+REQUIREMENTS:
+- Touhou 7 game directory ALREADY PATCHED TO 1.00b
+- Vpatch already in said game directory
+
+HELPER SCRIPT INSTRUCTION - This installer script also includes batch script that does the following:
+- Look for all *.lnk file in thcrap/ directory
+- Enumerate found .lnk from 1 to n and ask user for input in choosing the .lnk
+- If chosen .lnk has 'custom' in it (meaning it is the game configuration tool), it will open it immediately.
+- If chosen .lnk does not have 'custom' (meaning it is the actual game w/ any patches), it will set that .lnk as the launch target for Lutris
+- The reason for this is so Steam Deck users can dynamically choose between patches and enter game configuration tool while in game mode. Running patch configuration still requires entering desktop mode.
+
+INSTALLATION - You must follow the exact instruction below or installation may fail!
+- Complete installation directory and installation file download section.
+- Browse, locate, and select parent directory containing game directory.
+Thcrap patch configuration tool should popup momentarily, this is the part that is required:
+- In the find games section, choose 'select all' then proceed.
+- In the create shortcuts section, tick 'in the thcrap folder' option.
+
+TROUBLESHOOTING/FAQ:
+- If you have no sound, toggle 'Prefer system library'.
+- After running any of the launch options, WINE thinks the game is still running, just click 'Stop' to force close background WINE processes.
+- You may follow the THCRAP patch configuration tool instruction written above again when you re-run the configuration tool after installation.
