@@ -1,7 +1,8 @@
 files:
-- thcrap:
-    filename: thcrap.zip
-    url: https://github.com/thpatch/thcrap/releases/latest/download/thcrap.zip
+- thcrap: https://github.com/thpatch/thcrap/releases/latest/download/thcrap.zip
+- 100a: https://www16.big.or.jp/~zun/data/soft/youmu_update100a.lzh
+- 100b: https://www16.big.or.jp/~zun/data/soft/youmu_update100b.lzh
+- vpatch: https://www.thpatch.net/w/images/6/68/VsyncPatch.zip
 game:
   arch: win64
   exe: $GAMEDIR/pfx/drive_c/default.lnk
@@ -18,15 +19,35 @@ installer:
     install_gecko: false
     install_mono: false
     name: create_prefix
+- extract:
+    dst: $GAMEDIR/pfx/drive_c/Program Files/th07/
+    file: 100a
+- extract:
+    dst: $GAMEDIR/pfx/drive_c/Program Files/th07/
+    file: 100b
 - copy:
-    dst: $GAMEDIR/pfx/drive_c/Program Files/touhou7/
+    dst: $GAMEDIR/pfx/drive_c/Program Files/th07/
     src: $DISC
+- extract:
+    dst: $GAMEDIR/pfx/drive_c/VsyncPatch/
+    file: vpatch
+- execute:
+    command: cp $GAMEDIR/pfx/drive_c/VsyncPatch/vpatch_rev4/vpatch.exe "$GAMEDIR/pfx/drive_c/Program Files/th07/"
+- execute:
+    command: cp $GAMEDIR/pfx/drive_c/VsyncPatch/vpatch_rev4/vpatch.ini "$GAMEDIR/pfx/drive_c/Program Files/th07/"
+- execute:
+    command: cp $GAMEDIR/pfx/drive_c/VsyncPatch/vpatch_rev4/vpatch_th07.dll "$GAMEDIR/pfx/drive_c/Program Files/th07/"
+- execute:
+    command: chmod -R +w "$GAMEDIR/pfx/drive_c/Program Files/th07/"
+- execute:
+    command: WINEPREFIX=$GAMEDIR/pfx/ LC_ALL=ja_JP.UTF-8 wine "$GAMEDIR/pfx/drive_c/Program Files/th07/youmu_update100a.EXE"
+- execute:
+    command: WINEPREFIX=$GAMEDIR/pfx/ LC_ALL=ja_JP.UTF-8 wine "$GAMEDIR/pfx/drive_c/Program Files/th07/youmu_update100b.EXE"
 - extract:
     dst: $GAMEDIR/pfx/drive_c/thcrap
     file: thcrap
 - write_file:
-    content: '{ "th07": "C:/Program Files/touhou7/vpatch.exe", "th07_custom": "C:/Program
-      Files/touhou7/custom.exe" }'
+    content: '{ "th07": "C:/Program Files/th07/vpatch.exe", "th07_custom": "C:/Program Files/th07/custom.exe" }'
     file: $GAMEDIR/pfx/drive_c/thcrap/config/games.js
 - write_file:
     content: start cmd.exe /k "C:/thcrap/link_updater.bat"
@@ -50,7 +71,10 @@ installer:
     executable: $GAMEDIR/pfx/drive_c/thcrap/bin/thcrap_configure_v3.exe
     name: wineexec
 - execute:
-    command: find $GAMEDIR/pfx/drive_c/thcrap/ -not -name '*custom*.lnk' -and -name
-      'th07*.lnk' -exec cp {} $GAMEDIR/pfx/drive_c/default.lnk \;
+    command: find $GAMEDIR/pfx/drive_c/thcrap/ -not -name '*custom*.lnk' -and -name 'th07*.lnk' -exec cp {} $GAMEDIR/pfx/drive_c/default.lnk \;
+- task:
+    name: winetricks
+    app: cjkfonts
+    silent: true
 wine:
   dxvk: false

@@ -1,10 +1,8 @@
 files:
-- thcrap:
-    filename: thcrap.zip
-    url: https://github.com/thpatch/thcrap/releases/latest/download/thcrap.zip
-- vpatch:
-    filename: vpatch_th06_for_thcrap.zip
-    url: https://www.thpatch.net/w/images/f/f0/vpatch_th06_for_thcrap.zip
+- thcrap: https://github.com/thpatch/thcrap/releases/latest/download/thcrap.zip
+- 102f: https://www16.big.or.jp/~zun/data/soft/kouma_update102h.EXE
+- 102h: https://www16.big.or.jp/~zun/data/soft/kouma_update102f.EXE
+- vpatch: https://www.thpatch.net/w/images/f/f0/vpatch_th06_for_thcrap.zip
 game:
   arch: win64
   exe: $GAMEDIR/pfx/drive_c/default.lnk
@@ -22,16 +20,28 @@ installer:
     install_mono: false
     name: create_prefix
 - copy:
-    dst: $GAMEDIR/pfx/drive_c/Program Files/touhou6/
+    dst: $GAMEDIR/pfx/drive_c/Program Files/th06/
+    src: 102f
+- copy:
+    dst: $GAMEDIR/pfx/drive_c/Program Files/th06/
+    src: 102h
+- copy:
+    dst: $GAMEDIR/pfx/drive_c/Program Files/th06/
     src: $DISC
 - extract:
-    dst: $GAMEDIR/pfx/drive_c/Program Files/touhou6/
+    dst: $GAMEDIR/pfx/drive_c/Program Files/th06/
     file: vpatch
+- execute:
+    command: chmod -R +w "$GAMEDIR/pfx/drive_c/Program Files/th06/"
+- execute:
+    command: LC_ALL=ja_JP.UTF-8 wine "$GAMEDIR/pfx/drive_c/Program Files/th06/kouma_update102f.EXE"
+- execute:
+    command: LC_ALL=ja_JP.UTF-8 wine "$GAMEDIR/pfx/drive_c/Program Files/th06/kouma_update102h.EXE"
 - extract:
     dst: $GAMEDIR/pfx/drive_c/thcrap
     file: thcrap
 - write_file:
-    content: '{ "th06": "C:/Program Files/touhou6/vpatch.exe", "th06_custom": "C:/Program Files/touhou6/custom.exe" }'
+    content: '{ "th06": "C:/Program Files/th06/vpatch.exe", "th06_custom": "C:/Program Files/th06/custom.exe" }'
     file: $GAMEDIR/pfx/drive_c/thcrap/config/games.js
 - write_file:
     content: start cmd.exe /k "C:/thcrap/link_updater.bat"
@@ -56,5 +66,9 @@ installer:
     name: wineexec
 - execute:
     command: find $GAMEDIR/pfx/drive_c/thcrap/ -not -name '*custom*.lnk' -and -name 'th06*.lnk' -exec cp {} $GAMEDIR/pfx/drive_c/default.lnk \;
+- task:
+    name: winetricks
+    app: cjkfonts
+    silent: true
 wine:
   dxvk: false

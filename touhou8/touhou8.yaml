@@ -1,7 +1,9 @@
 files:
-- thcrap:
-    filename: thcrap.zip
-    url: https://github.com/thpatch/thcrap/releases/latest/download/thcrap.zip
+- thcrap: https://github.com/thpatch/thcrap/releases/latest/download/thcrap.zip
+- 100a: http://www16.big.or.jp/~zun/data/soft/eiya_update100a.lzh
+- 100a_100d: http://www16.big.or.jp/~zun/data/soft/eiya_update100a_100d.lzh
+- 100b_100d: http://www16.big.or.jp/~zun/data/soft/eiya_update100b_100d.lzh
+- vpatch: https://www.thpatch.net/w/images/6/68/VsyncPatch.zip
 game:
   arch: win64
   exe: $GAMEDIR/pfx/drive_c/default.lnk
@@ -18,15 +20,44 @@ installer:
     install_gecko: false
     install_mono: false
     name: create_prefix
+- extract:
+    dst: $GAMEDIR/pfx/drive_c/Program Files/th08/
+    file: 100a
+- extract:
+    dst: $GAMEDIR/pfx/drive_c/Program Files/th08/
+    file: 100a_100d
+- extract:
+    dst: $GAMEDIR/pfx/drive_c/Program Files/th08/
+    file: 100b_100d
 - copy:
-    dst: $GAMEDIR/pfx/drive_c/Program Files/touhou8/
+    dst: $GAMEDIR/pfx/drive_c/Program Files/th08/
     src: $DISC
+- extract:
+    dst: $GAMEDIR/pfx/drive_c/VsyncPatch/
+    file: vpatch
+- execute:
+    command: cp $GAMEDIR/pfx/drive_c/VsyncPatch/vpatch_rev4/vpatch.exe "$GAMEDIR/pfx/drive_c/Program Files/th08/"
+- execute:
+    command: cp $GAMEDIR/pfx/drive_c/VsyncPatch/vpatch_rev4/vpatch.ini "$GAMEDIR/pfx/drive_c/Program Files/th08/"
+- execute:
+    command: cp $GAMEDIR/pfx/drive_c/VsyncPatch/vpatch_rev4/vpatch_th08.dll "$GAMEDIR/pfx/drive_c/Program Files/th08/"
+- execute:
+    command: chmod -R +w "$GAMEDIR/pfx/drive_c/Program Files/th08/"
+- task:
+    name: winetricks
+    app: cjkfonts
+    silent: true
+- execute:
+    command: WINEPREFIX=$GAMEDIR/pfx/ LC_ALL=ja_JP.UTF-8 wine "$GAMEDIR/pfx/drive_c/Program Files/th08/eiya_update100a.EXE" &
+- execute:
+    command: WINEPREFIX=$GAMEDIR/pfx/ LC_ALL=ja_JP.UTF-8 wine "$GAMEDIR/pfx/drive_c/Program Files/th08/eiya_update100a_100d.EXE" &
+- execute:
+    command: WINEPREFIX=$GAMEDIR/pfx/ LC_ALL=ja_JP.UTF-8 wine "$GAMEDIR/pfx/drive_c/Program Files/th08/eiya_update100b_100d.EXE" &
 - extract:
     dst: $GAMEDIR/pfx/drive_c/thcrap
     file: thcrap
 - write_file:
-    content: '{ "th08": "C:/Program Files/touhou8/vpatch.exe", "th08_custom": "C:/Program
-      Files/touhou8/custom.exe" }'
+    content: '{ "th08": "C:/Program Files/th08/vpatch.exe", "th08_custom": "C:/Program Files/th08/custom.exe" }'
     file: $GAMEDIR/pfx/drive_c/thcrap/config/games.js
 - write_file:
     content: start cmd.exe /k "C:/thcrap/link_updater.bat"
@@ -46,11 +77,9 @@ installer:
       \ndel %tempFile% \necho Setting as default: %fullPath% \ncopy \"%fullPath%\"\
       \ \"%newPath%\" \nexit\n:end \nendlocal"
     file: $GAMEDIR/pfx/drive_c/thcrap/link_updater.bat
-- task:
-    executable: $GAMEDIR/pfx/drive_c/thcrap/bin/thcrap_configure_v3.exe
-    name: wineexec
 - execute:
-    command: find $GAMEDIR/pfx/drive_c/thcrap/ -not -name '*custom*.lnk' -and -name
-      'th08*.lnk' -exec cp {} $GAMEDIR/pfx/drive_c/default.lnk \;
+    command: WINEPREFIX=$GAMEDIR/pfx/ wine "$GAMEDIR/pfx/drive_c/thcrap/bin/thcrap_configure_v3.exe"
+- execute:
+    command: find $GAMEDIR/pfx/drive_c/thcrap/ -not -name '*custom*.lnk' -and -name 'th08*.lnk' -exec cp {} $GAMEDIR/pfx/drive_c/default.lnk \;
 wine:
   dxvk: false
