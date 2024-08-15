@@ -2,7 +2,7 @@
 setlocal enabledelayedexpansion 
 set count=0 
 set tempFile=%temp%\lnkfiles.txt 
-cd thcrap 
+cd users\%USERNAME%\Desktop 
 dir /b *.lnk > %tempFile% 
 if %errorlevel% neq 0 (echo No .lnk files found in the current directory. 
 goto :end) 
@@ -20,7 +20,7 @@ echo %chosenFile% | findstr /c:"custom" >nul
 if %errorlevel% equ 0 (echo The link chosen is game configuration tool. Launching instead of setting as default.
 start "" "%fullPath%"
 exit)
-set "newPath=%cd%\..\default.lnk"
+set "newPath=%cd%\..\..\..\default.lnk"
 del %tempFile% 
 echo Setting as default: %fullPath% 
 copy "%fullPath%" "%newPath%" 

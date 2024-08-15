@@ -1,6 +1,6 @@
 REQUIREMENTS:
-- Original JP Touhou 7 game directory any version 1.00-1.00b (English patched one will not work!)
-- System JP locale enabled (https://www.visualnovelwiki.org/en/general/jp-locale - your distro may not be listed in there, but do your own research to figure out how to). Pay attention to the Flatpak Lutris section if you are using such!
+- Original JP Touhou 7 game directory any version 1.00-1.00b (English pre-patched one may not work!)
+- System JP locale enabled (https://web.archive.org/web/20240126214334/https://www.visualnovelwiki.org/en/general/jp-locale - your distro may not be listed in there, but do your own research to figure out how to). Pay attention to the Lutris Flatpak configuration if you are using it!
 
 THIS INSTALLER PROVIDES:
 - Run ZUN patches to update the game to the latest version
@@ -9,22 +9,13 @@ THIS INSTALLER PROVIDES:
 - A batch helper script to manipulate thcrap created launch shortcuts
 
 HELPER SCRIPT EXPLANATION - This installer script also includes batch script that does the following:
-- Look for all *.lnk file in thcrap/ directory
+- Look for all *.lnk file in Desktop directory
 - Enumerate found .lnk from 1 to n and ask user for input in choosing the .lnk
-- If chosen .lnk has 'custom' in it (meaning it is the game configuration tool), it will open it immediately.
-- If chosen .lnk does not have 'custom' (meaning it is launch shortcut for the game with patches), it will set that .lnk as the main game executable for Lutris
+- If chosen .lnk has 'custom' in it (meaning it is the game configuration tool), it will open it immediately. This allows you to edit the game config.
+- If chosen .lnk does not have 'custom' (meaning it is launch shortcut for the game with patches), it will set that .lnk as the main game executable for Lutris.
 
-The reason for this is Lutris requires a static location for the main game executable, but patching creates a different set of shortcuts each time you create a patch stack. The solution is to have a script that help you choose which shortcut is the main game executable. This also means that Steam Deck users can dynamically choose between patches and enter game configuration tool or run patch configuration all within the Flatpak Lutris launch options in Desktop mode.
-
-INSTALLATION - You must follow the exact instruction below or installation may fail!
-- Complete installation directory and installation file download section.
-- Browse, locate, and select the game directory.
-Thcrap patch configuration tool should popup momentarily, this is the part that is required:
-- In the find games section, choose 'select all' then proceed.
-- In the create shortcuts section, tick 'in the thcrap folder' option.
+The reason for this is Lutris requires a static location for the main game executable, but patching creates a different set of shortcuts each time you create a patch stack. The solution is to have a script that help you choose which shortcut is the main game executable. This also means that Steam Deck users can dynamically choose between patches and enter game configuration tool or run patch configuration all within the Flatpak Lutris launch options in Desktop mode without having to manually edit by hand.
 
 TROUBLESHOOTING/FAQ:
 - If you have no sound, toggle 'Prefer system library'.
-- After running any of the launch options, WINE thinks the game is still running, this is annoying but fortunately a non-issue, just click 'Stop' to force close background WINE processes.
-- You must always follow THCRAP patch configuration tool instruction written above again when you re-run the configuration tool after installation.
-- Unfortunately this installer does not yet support running only the game executable with no patch applied at all.
+- Closing thcrap configuration tool or the main game executable creates a hanging process, this is annoying but fortunately a non-issue, just click 'Stop' in Lutris to force close background processes. This also affects Steam Deck game mode, simply tap B when quitting game to force close background processes.
