@@ -1,0 +1,33 @@
+REQUIREMENTS:
+- Original JP Touhou 6 game directory any version 1.00-1.02h. English pre-patched one may not work!
+- System JP locale enabled (https://web.archive.org/web/20240126214334/https://www.visualnovelwiki.org/en/general/jp-locale - your distro may not be listed in there, but do your own research to figure out how to). Pay attention to the Lutris Flatpak configuration if you are using it!
+- How to use and navigate thprac launcher! (https://github.com/touhouworldcup/thprac).
+
+The reason why thprac is used because of three reasons. It provides a very nice launcher utility that works with multiple thcrap patch stacks, and it can launch any of [main game + optional thprac, custom.exe, thcrap patch configuration] that would have been a PITA to do in Lutris otherwise. Lastly, some people wants thprac so it is best to include them as well.
+
+THIS INSTALLER PROVIDES:
+- Run ZUN patches to update the game to the latest version
+- vpatch
+- Latest thcrap
+- Thprac
+
+THPRAC SETUP:
+Thprac will not auto-detect thcrap patches and apply them to your game, here is what you must do in thprac:
+- Go to Settings.
+- Scroll down to the thprac section.
+- Click "Add thcrap configs...".
+- Finish selection and apply.
+Now go to the Game tab and you can now click to play the game. You have to repeat this procedure every time you create a new patch stack and wants to play with it.
+
+TROUBLESHOOTING:
+- If you have no sound, toggle 'Prefer system library'.
+- Anytime thcrap exits, it creates a hanging process, this is annoying but fortunately a non-issue, just click 'Stop' in Lutris to force close background processes. This also affects Steam Deck game mode, simply tap B when quitting game to force close background processes.
+- Steam Deck user might need to reboot once after first-time installation, yes really, no idea why but it is needed on my Deck.
+- If, for whatever reason, the main executable Lutris is configured to launch ($GAMEDIR/drice_c/thprac.exe) has its name changed, you need to rename it to "thprac.exe". The automatic rename functionality of thprac should be left on "previously used filename" or "use thprac.exe", the correct setting is by default so you should not change this.
+
+Changing aspect ratio:
+- The default configuration launches the game in fullscreen mode and while in fullscreen mode it will always maintain the game's original 4:3 aspect ratio. The only way to make it stretch is to run in windowed mode and set vpatch.ini to your desired aspect ratio.
+- To change the game to a different aspect ratio, use the edit vpatch.ini launch option, change both "AskWindowMode" and "enabled" to 1, and then change the Width/Height to your preferred aspect ratio.
+- If you have "AskWindowMode" to 1, there will be a japanese prompt asking if you want to play the game in fullscreen mode. Clicking "はい(Y)" will launch fullscreen and "いいえ(N)" will launch windowed mode.
+- If you don't want this prompt to appears then edit "AskWindowMode" to 0. Then run custom.exe in thprac (aka game configuration tool) and change option to windowed mode.
+- Steam Deck users making changes to vpatch.ini needs to be aware that if width/height were set to native resolution you cannot use scaling in gaming mode! FSR is really sublime with Touhou and if you want to play with your screen native aspect ratio (16:10) simply change Width to 768 and leave Height at 480.

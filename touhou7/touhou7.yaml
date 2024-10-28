@@ -3,15 +3,20 @@ files:
 - 100a: https://www16.big.or.jp/~zun/data/soft/youmu_update100a.lzh
 - 100b: https://www16.big.or.jp/~zun/data/soft/youmu_update100b.lzh
 - vpatch: https://www.thpatch.net/w/images/6/68/VsyncPatch.zip
+- thprac: 
+    url: https://github.com/touhouworldcup/thprac/releases/download/v2.2.1.8/thprac.v2.2.1.8.exe
+    filename: thprac.exe
 game:
   arch: win64
-  exe: $GAMEDIR/drive_c/default.lnk
+  exe: $GAMEDIR/drive_c/thprac.exe
   launch_configs:
   - exe: $GAMEDIR/drive_c/thcrap/bin/thcrap_configure_v3.exe
-    name: THCRAP Patch Configuration
-  - exe: $GAMEDIR/drive_c/users/$USER/Desktop/bootstrap_link_updater.bat
-    name: Link Updater and Configuration Tool Launcher Script
+    name: THCRAP Patch Configuration Tool
+  - exe: $GAMEDIR/drive_c/windows/notepad.exe
+    name: Edit vpatch.ini
+    args: $GAMEDIR/drive_c/th07/vpatch.ini
   prefix: $GAMEDIR
+install_complete_text: To play with patch, you need to use thcrap patch configuration tool launch option to create patch stacks. While in thprac, go to "Settings > Add thcrap configs" and choose to apply patch stacks to game.
 installer:
 - insert-disc:
     requires: th07.exe
@@ -57,34 +62,14 @@ installer:
     dst: $GAMEDIR/drive_c/thcrap
     file: thcrap
 - write_file:
-    content: '{ "th07": "C:/Program Files/th07/vpatch.exe", "th07_custom": "C:/Program Files/th07/custom.exe" }'
+    content: '{"th07":"C:/Program Files/th07/vpatch.exe","th07_custom":"C:/Program Files/th07/custom.exe"}'
     file: $GAMEDIR/drive_c/thcrap/config/games.js
+- copy:
+    dst: $GAMEDIR/drive_c/
+    src: thprac
 - write_file:
-    content: start cmd.exe /k "C:/users/%USERNAME%/Desktop/link_updater.bat"
-    file: $GAMEDIR/drive_c/users/$USER/Desktop/bootstrap_link_updater.bat
-- write_file:
-    content: "@echo off \nsetlocal enabledelayedexpansion \nset count=0 \nset tempFile=%temp%\\\
-      lnkfiles.txt \ncd users\\%USERNAME%\\Desktop  \ndir /b *.lnk > %tempFile% \nif %errorlevel% neq 0\
-      \ (echo No .lnk files found in the current directory. \ngoto :end) \nfor /f\
-      \ \"tokens=* delims=\" %%A in (%tempFile%) do (set /a count+=1 \nset \"file!count!=%%A\"\
-      \ \necho !count!. %%A) \nif %count%==0 (echo No .lnk files found in the current\
-      \ directory. \ngoto :end) \nset /p choice=Enter the number to set link as Lutris\
-      \ default launch: \nif not defined file%choice% (echo Invalid choice. \ngoto\
-      \ :end) \nset chosenFile=!file%choice%! \nset \"fullPath=%cd%\\%chosenFile%\"\
-      \ \necho %chosenFile% | findstr /c:\"custom\" >nul\nif %errorlevel% equ 0 (echo\
-      \ The link chosen is game configuration tool. Launching instead of setting as\
-      \ default.\nstart \"\" \"%fullPath%\"\nexit)\nset \"newPath=%cd%\\..\\..\\..\\default.lnk\"\
-      \ndel %tempFile% \necho Setting as default: %fullPath% \ncopy \"%fullPath%\"\
-      \ \"%newPath%\" \nexit\n:end \nendlocal"
-    file: $GAMEDIR/drive_c/users/$USER/Desktop/link_updater.bat
-- task:
-    executable: $GAMEDIR/drive_c/thcrap/bin/thcrap_configure_v3.exe
-    name: wineexec
-    description: Thcrap patch configuration tool will run. In the create shortcuts section, REQUIRED to leave all settings default!
-- execute:
-    command: find $GAMEDIR/drive_c/users/$USER/Desktop/ -not -name '*custom*.lnk' -and -name 'th07*.lnk' -exec cp {} $GAMEDIR/drive_c/default.lnk \;
+    file: $GAMEDIR/drive_c/users/$USER/AppData/Roaming/thprac/thprac.json
+    content: '{"links":{},"settings":{"apply_thprac_default":0,"after_launch":1,"always_open_launcher":false,"dont_search_ongoing_game":false,"auto_default_launch":false,"thcrap":"C:\\thcrap","filter_default":0,"theme":0,"use_relative_path":false,"check_update":true,"resizable_window":false,"reflective_launch":false,"existing_game_launch_action":0,"language":1,"thprac_admin_rights":false,"filename_after_update":1,"check_update_timing":0,"update_without_confirmation":false},"games":{"th09":{"default_launch":-1,"instances":[]},"th12":{"default_launch":-1,"instances":[]},"alcostg":{"default_launch":-1,"instances":[]},"th105":{"default_launch":-1,"instances":[]},"th06":{"default_launch":-1,"instances":[]},"th07":{"default_launch":-1,"instances":[]},"th075":{"default_launch":-1,"instances":[]},"th08":{"default_launch":-1,"instances":[]},"th095":{"default_launch":-1,"instances":[]},"th10":{"default_launch":-1,"instances":[]},"th11":{"default_launch":-1,"instances":[]},"th123":{"default_launch":-1,"instances":[]},"th125":{"default_launch":-1,"instances":[]},"th128":{"default_launch":-1,"instances":[]},"th13":{"default_launch":-1,"instances":[]},"th135":{"default_launch":-1,"instances":[]},"th14":{"default_launch":-1,"instances":[]},"th143":{"default_launch":-1,"instances":[]},"th145":{"default_launch":-1,"instances":[]},"th15":{"default_launch":-1,"instances":[]},"th155":{"default_launch":-1,"instances":[]},"th16":{"default_launch":-1,"instances":[]},"th17":{"default_launch":-1,"instances":[]},"th165":{"default_launch":-1,"instances":[]},"th175":{"default_launch":-1,"instances":[]},"th18":{"default_launch":-1,"instances":[]},"th185":{"default_launch":-1,"instances":[]},"th19":{"default_launch":-1,"instances":[]}}}'
 system:
     env:
         LC_ALL: ja_JP.UTF-8
-wine:
-  dxvk: false
