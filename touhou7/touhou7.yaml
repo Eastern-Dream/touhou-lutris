@@ -1,7 +1,5 @@
 files:
 - thcrap: https://github.com/thpatch/thcrap/releases/latest/download/thcrap.zip
-- 100a: https://www16.big.or.jp/~zun/data/soft/youmu_update100a.lzh
-- 100b: https://www16.big.or.jp/~zun/data/soft/youmu_update100b.lzh
 - vpatch: https://www.thpatch.net/w/images/6/68/VsyncPatch.zip
 - thprac: 
     url: https://github.com/touhouworldcup/thprac/releases/download/v2.2.1.8/thprac.v2.2.1.8.exe
@@ -24,12 +22,6 @@ installer:
     install_gecko: false
     install_mono: false
     name: create_prefix
-- extract:
-    dst: $GAMEDIR/drive_c/Program Files/th07/
-    file: 100a
-- extract:
-    dst: $GAMEDIR/drive_c/Program Files/th07/
-    file: 100b
 - copy:
     dst: $GAMEDIR/drive_c/Program Files/th07/
     src: $DISC
@@ -48,16 +40,6 @@ installer:
     name: winetricks
     app: cjkfonts
     silent: true
-- task:
-    executable: $GAMEDIR/drive_c/Program Files/th07/youmu_update100a.EXE
-    name: wineexec
-    prefix: $GAMEDIR
-    description: ZUN patch will run, press OK when prompted to continue.
-- task:
-    executable: $GAMEDIR/drive_c/Program Files/th07/youmu_update100b.EXE
-    name: wineexec
-    prefix: $GAMEDIR
-    description: ZUN patch will run, press OK when prompted to continue.
 - extract:
     dst: $GAMEDIR/drive_c/thcrap
     file: thcrap

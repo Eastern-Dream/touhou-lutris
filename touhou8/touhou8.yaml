@@ -1,14 +1,11 @@
 files:
 - thcrap: https://github.com/thpatch/thcrap/releases/latest/download/thcrap.zip
-- 100a: http://www16.big.or.jp/~zun/data/soft/eiya_update100a.lzh
-- 100a_100d: http://www16.big.or.jp/~zun/data/soft/eiya_update100a_100d.lzh
-- 100b_100d: http://www16.big.or.jp/~zun/data/soft/eiya_update100b_100d.lzh
 - vpatch: https://www.thpatch.net/w/images/6/68/VsyncPatch.zip
 - thprac: 
     url: https://github.com/touhouworldcup/thprac/releases/download/v2.2.1.8/thprac.v2.2.1.8.exe
     filename: thprac.exe
 game:
-  arch: win32
+  arch: win64
   exe: $GAMEDIR/drive_c/thprac.exe
   launch_configs:
   - exe: $GAMEDIR/drive_c/thcrap/bin/thcrap_configure_v3.exe
@@ -25,15 +22,6 @@ installer:
     install_gecko: false
     install_mono: false
     name: create_prefix
-- extract:
-    dst: $GAMEDIR/drive_c/Program Files/th08/
-    file: 100a
-- extract:
-    dst: $GAMEDIR/drive_c/Program Files/th08/
-    file: 100a_100d
-- extract:
-    dst: $GAMEDIR/drive_c/Program Files/th08/
-    file: 100b_100d
 - copy:
     dst: $GAMEDIR/drive_c/Program Files/th08/
     src: $DISC
@@ -52,27 +40,6 @@ installer:
     name: winetricks
     app: cjkfonts
     silent: true
-- task:
-    arch: win32
-    executable: $GAMEDIR/drive_c/Program Files/th08/eiya_update100a.EXE
-    name: wineexec
-    prefix: $GAMEDIR
-    description: ZUN patch 1.00-1.00a will run. Please read the installer technical notes for detailed instruction.
-    return_code: 65280
-- task:
-    arch: win32
-    executable: $GAMEDIR/drive_c/Program Files/th08/eiya_update100a_100d.EXE
-    name: wineexec
-    prefix: $GAMEDIR
-    description: ZUN patch 1.00a-1.00d will run. Please read the installer technical notes for detailed instruction.
-    return_code: 65280
-- task:
-    arch: win32
-    executable: $GAMEDIR/drive_c/Program Files/th08/eiya_update100b_100d.EXE
-    name: wineexec
-    prefix: $GAMEDIR
-    description: ZUN patch 1.00b-1.00d will run. Please read the installer technical notes for detailed instruction.
-    return_code: 65280
 - extract:
     dst: $GAMEDIR/drive_c/thcrap
     file: thcrap

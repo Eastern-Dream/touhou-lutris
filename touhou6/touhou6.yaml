@@ -1,11 +1,9 @@
 files:
 - thcrap: https://github.com/thpatch/thcrap/releases/latest/download/thcrap.zip
-- 102f: https://www16.big.or.jp/~zun/data/soft/kouma_update102h.EXE
-- 102h: https://www16.big.or.jp/~zun/data/soft/kouma_update102f.EXE
 - vpatch: https://www.thpatch.net/w/images/f/f0/vpatch_th06_for_thcrap.zip
 - thprac:
-    filename: thprac.exe
     url: https://github.com/touhouworldcup/thprac/releases/download/v2.2.1.8/thprac.v2.2.1.8.exe
+    filename: thprac.exe
 game:
   arch: win64
   exe: $GAMEDIR/drive_c/thprac.exe
@@ -26,19 +24,10 @@ installer:
     name: create_prefix
 - copy:
     dst: $GAMEDIR/drive_c/th06/
-    src: 102f
-- copy:
-    dst: $GAMEDIR/drive_c/th06/
-    src: 102h
-- copy:
-    dst: $GAMEDIR/drive_c/th06/
     src: $DISC
 - extract:
     dst: $GAMEDIR/drive_c/th06/
     file: vpatch
-- copy:
-    dst: $GAMEDIR/drive_c/th06/
-    src: 102h
 - execute:
     command: chmod -R +w "$GAMEDIR/drive_c/th06/"
 - task:
@@ -46,16 +35,6 @@ installer:
     name: winetricks
     prefix: $GAMEDIR
     silent: true
-- task:
-    description: ZUN patch will run, press OK when prompted to continue.
-    executable: $GAMEDIR/drive_c/th06/kouma_update102f.EXE
-    name: wineexec
-    prefix: $GAMEDIR
-- task:
-    description: ZUN patch will run, press OK when prompted to continue.
-    executable: $GAMEDIR/drive_c/th06/kouma_update102h.EXE
-    name: wineexec
-    prefix: $GAMEDIR
 - extract:
     dst: $GAMEDIR/drive_c/thcrap
     file: thcrap
